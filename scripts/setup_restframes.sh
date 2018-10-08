@@ -19,6 +19,7 @@ function main {
     fi
 
     source ${rj_dir}/setup_RestFrames.sh
+    export CMAKE_PREFIX_PATH=${rj_dir}/lib:${CMAKE_PREFIX_PATH}
 
 }
 
