@@ -12,26 +12,28 @@ set( extra_libs )
 # declare the RJTupler package dependencies
 atlas_depends_on_subdirs(
     PUBLIC
-    SusyNtuple
     Superflow
+    SusyNtuple
     ${extra_deps}
 )
 
 #external dependencies
 find_package( ROOT COMPONENTS Gpad Graf Graf3d Core Tree MathCore Hist RIO )
 
-atlas_add_root_dictionary( RJTuplerLib RJTuplerCintDict
-        ROOT_HEADERS RJTupler/*.h Root/LinkDef.h
-        EXTERNAL_PACKAGES ROOT
-)
+include_directories($ENV{TestArea}/../RestFrames/include)
+find_library(RJLIB RestFrames)
+
+#atlas_add_root_dictionary( RJTuplerLib RJTuplerCintDict
+#        ROOT_HEADERS  Root/LinkDef.h
+#        EXTERNAL_PACKAGES ROOT
+#)
 
 # libraries
 atlas_add_library( RJTuplerLib
     RJTupler/*.h Root/*.cxx ${RJTuplerCintDict}
     PUBLIC_HEADERS RJTupler
-    PRIVATE_INCLUDE_DIRS ${ROOT_INCLUDE_DIRS} $ENV{TestArea}/../RestFrames/include
-    LINK_LIBRARIES SusyNtupleLib $ENV{TestArea}/../RestFrames/lib -lRestFrames
-    PRIVATE_LINK_LIBRARIES ${ROOT_LIBRARIES}
+    INCLUDE_DIRS ${ROOT_INCLUDE_DIRS} #$ENV{TestArea}/../RestFrames/include
+    LINK_LIBRARIES SuperflowLib SusyNtupleLib ${RJLIB} ${ROOT_LIBRARIES}
 )
 
 # executable(s) in the package
